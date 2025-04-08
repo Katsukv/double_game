@@ -1,0 +1,3 @@
+C:/D/proga/bsu/rkpp/double_game/cmake-build-debug/CMakeFiles/double_game.dir
+C:/D/proga/bsu/rkpp/double_game/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/D/proga/bsu/rkpp/double_game/cmake-build-debug/CMakeFiles/rebuild_cache.dir
