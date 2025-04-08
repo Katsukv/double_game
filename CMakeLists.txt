@@ -20,6 +20,11 @@ set(Qt6Gui_DIR "C:\\Qt\\6.10.0\\mingw_64\\lib\\cmake\\Qt6Gui")
 find_package(Qt6Gui REQUIRED)
 
 add_executable(double_game main.cpp
+        Platform.h
+        platform.cpp
+        Globals.h
+        Doodle.h
+        doodle.cpp
 )
 
 target_link_libraries(double_game PRIVATE Qt6Widgets Qt6Core Qt6Gui)
