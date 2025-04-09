@@ -8,9 +8,9 @@
 #include <QPixmap>
 
 
-#include "Globals.h"
-#include "Platform.h"
-#include "Doodle.h"
+#include "hdr/Globals.h"
+#include "hdr/Platform.h"
+#include "hdr/Doodle.h"
 
 using namespace std;
 

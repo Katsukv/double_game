@@ -2,7 +2,7 @@
 // Created by katsu on 09.04.2025.
 //
 
-#include "Doodle.h"
+#include "../hdr/Doodle.h"
 #include <cmath>
 
 

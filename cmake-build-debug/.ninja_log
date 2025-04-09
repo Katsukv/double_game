@@ -1,11 +1,12 @@
 # ninja log v6
-6	555	7658564700288065	build.ninja	80e64a879c481c29
-22	4063	7658563361616748	CMakeFiles/double_game.dir/main.cpp.obj	f0d4a9f9a77a3f74
-4063	4236	7658563402033658	double_game.exe	95c785925446ad45
-26	2631	7658563361656756	CMakeFiles/double_game.dir/platform.cpp.obj	c421e770d1de3e2c
-37	95	7657656080117727	CMakeFiles/double_game.dir/Doodle.cpp.obj	48040d2f4202f7d3
-16	2451	7658584764636069	CMakeFiles/double_game.dir/doodle.cpp.obj	71abc76ca4ef32da
-12	3387	7658585934758776	CMakeFiles/double_game.dir/main.cpp.obj	f0d4a9f9a77a3f74
 11	3420	7658586645081042	CMakeFiles/double_game.dir/main.cpp.obj	f0d4a9f9a77a3f74
-22	2365	7658586761306627	CMakeFiles/double_game.dir/doodle.cpp.obj	71abc76ca4ef32da
+6	555	7658600592378644	build.ninja	80e64a879c481c29
+26	2631	7658563361656756	CMakeFiles/double_game.dir/platform.cpp.obj	c421e770d1de3e2c
 2366	2551	7658586784746216	double_game.exe	e95af7e4a074a14d
+22	2365	7658586761306627	CMakeFiles/double_game.dir/doodle.cpp.obj	71abc76ca4ef32da
+37	95	7657656080117727	CMakeFiles/double_game.dir/Doodle.cpp.obj	48040d2f4202f7d3
+17	665	7658600592378644	build.ninja	80e64a879c481c29
+19	2600	7658600770449686	CMakeFiles/double_game.dir/sours/doodle.cpp.obj	744b7074e989750c
+26	2387	7658600904355868	CMakeFiles/double_game.dir/sours/platform.cpp.obj	d8596f73ecc78cfd
+21	3655	7658601039579968	CMakeFiles/double_game.dir/main.cpp.obj	f0d4a9f9a77a3f74
+3656	3841	7658601075934627	double_game.exe	b71c032e0dc51738

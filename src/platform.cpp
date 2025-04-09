@@ -2,7 +2,7 @@
 // Created by katsu on 09.04.2025.
 //
 
-#include "Platform.h"
+#include "../hdr/Platform.h"
 
 ::Platform::Platform(float x, float y): m_x(x), m_y(y) {}
 

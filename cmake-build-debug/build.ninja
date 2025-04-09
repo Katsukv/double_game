@@ -56,19 +56,19 @@ build CMakeFiles/double_game.dir/main.cpp.obj: CXX_COMPILER__double_game_unscann
   OBJECT_DIR = CMakeFiles\double_game.dir
   OBJECT_FILE_DIR = CMakeFiles\double_game.dir
 
-build CMakeFiles/double_game.dir/platform.cpp.obj: CXX_COMPILER__double_game_unscanned_Debug C$:/D/proga/bsu/rkpp/double_game/platform.cpp || cmake_object_order_depends_target_double_game
-  DEP_FILE = CMakeFiles\double_game.dir\platform.cpp.obj.d
+build CMakeFiles/double_game.dir/sours/platform.cpp.obj: CXX_COMPILER__double_game_unscanned_Debug C$:/D/proga/bsu/rkpp/double_game/sours/platform.cpp || cmake_object_order_depends_target_double_game
+  DEP_FILE = CMakeFiles\double_game.dir\sours\platform.cpp.obj.d
   FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Qt/6.10.0/mingw_64/include/QtWidgets -IC:/Qt/6.10.0/mingw_64/include/QtCore -IC:/Qt/6.10.0/mingw_64/include/QtGui -IC:/Qt/6.10.0/mingw_64/include
   OBJECT_DIR = CMakeFiles\double_game.dir
-  OBJECT_FILE_DIR = CMakeFiles\double_game.dir
+  OBJECT_FILE_DIR = CMakeFiles\double_game.dir\sours
 
-build CMakeFiles/double_game.dir/doodle.cpp.obj: CXX_COMPILER__double_game_unscanned_Debug C$:/D/proga/bsu/rkpp/double_game/doodle.cpp || cmake_object_order_depends_target_double_game
-  DEP_FILE = CMakeFiles\double_game.dir\doodle.cpp.obj.d
+build CMakeFiles/double_game.dir/sours/doodle.cpp.obj: CXX_COMPILER__double_game_unscanned_Debug C$:/D/proga/bsu/rkpp/double_game/sours/doodle.cpp || cmake_object_order_depends_target_double_game
+  DEP_FILE = CMakeFiles\double_game.dir\sours\doodle.cpp.obj.d
   FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
   INCLUDES = -IC:/Qt/6.10.0/mingw_64/include/QtWidgets -IC:/Qt/6.10.0/mingw_64/include/QtCore -IC:/Qt/6.10.0/mingw_64/include/QtGui -IC:/Qt/6.10.0/mingw_64/include
   OBJECT_DIR = CMakeFiles\double_game.dir
-  OBJECT_FILE_DIR = CMakeFiles\double_game.dir
+  OBJECT_FILE_DIR = CMakeFiles\double_game.dir\sours
 
 
 # =============================================================================
@@ -78,7 +78,7 @@ build CMakeFiles/double_game.dir/doodle.cpp.obj: CXX_COMPILER__double_game_unsca
 #############################################
 # Link the executable double_game.exe
 
-build double_game.exe: CXX_EXECUTABLE_LINKER__double_game_Debug CMakeFiles/double_game.dir/main.cpp.obj CMakeFiles/double_game.dir/platform.cpp.obj CMakeFiles/double_game.dir/doodle.cpp.obj
+build double_game.exe: CXX_EXECUTABLE_LINKER__double_game_Debug CMakeFiles/double_game.dir/main.cpp.obj CMakeFiles/double_game.dir/sours/platform.cpp.obj CMakeFiles/double_game.dir/sours/doodle.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lQt6Widgets  -lQt6Core  -lQt6Gui  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   LINK_PATH = -LC:/Qt/6.10.0/mingw_64/lib
