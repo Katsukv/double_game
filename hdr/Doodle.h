@@ -7,8 +7,6 @@
 
 #pragma once
 
-#include <QVector>
-
 #include "Globals.h"
 #include "Platform.h"
 
@@ -40,7 +38,7 @@ private:
     void Intersection_with_platforms(float &newY, float &new_y_Velocity,
         float &newX, const std::vector<Platform> &platforms, const float &deltaTime);
 
-    float m_x, m_y, m_r;
+    float m_x, m_y;
     float m_height, m_width;
     float y_velocity, y_acceleration;
     float x_velocity, x_acceleration;

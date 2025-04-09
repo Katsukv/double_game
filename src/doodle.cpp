@@ -75,8 +75,6 @@ void Doodle::StopMovingLeft() {
 
 void Doodle::Upd_x(float &newX, float &new_x_Velocity, const float &deltaTime) {
     newX = m_x;
-    new_x_Velocity = new_x_Velocity;
-
     if (m_isMoving_right) {
 
         newX = m_x + x_velocity*deltaTime + x_acceleration*deltaTime/2;
