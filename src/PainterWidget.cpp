@@ -11,7 +11,7 @@ void PainterWidget::paintEvent(QPaintEvent *event) {
         QPainter painter(this);
 
         QPixmap background;
-        background.load("..//sprites//Doodle Jump//doodlestein-bck@2x.png");
+        background.load("..//sprites//Doodle Jump//bck@2x.png");
 
         painter.drawPixmap(0, 0, background);
 

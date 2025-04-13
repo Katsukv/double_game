@@ -4,5 +4,7 @@
 
 #ifndef GAMEWIDGET_H
 #define GAMEWIDGET_H
+#include "PainterWidget.h"
 
+class GameWidget : public QWidget{}
 #endif //GAMEWIDGET_H

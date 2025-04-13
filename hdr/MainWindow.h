@@ -13,6 +13,7 @@
 #include <QApplication>
 
 #include "PainterWidget.h"
+#include <QIcon>
 
 class MainWindow: public QMainWindow{
 public:
@@ -37,6 +38,15 @@ private:
     bool m_isRunning = true;
     float min_doodle_y_pos = SCREEN_SIZE_Y / 3;
     float score = 0;
+
+    enum class GameState {
+        MENU,
+        PLAYING,
+        PAUSED,
+        GAME_OVER
+    };
+
+    GameState currentState = GameState::MENU;
 };
 
 #endif //MAINWINDOW_H

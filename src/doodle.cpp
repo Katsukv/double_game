@@ -8,8 +8,8 @@
 
 ::Doodle::Doodle(float x, float y, QString path_to_RDoodle, QString path_to_LDoodle):
         m_x(x), m_y(y),
-        y_velocity(0), y_acceleration(50),
-        x_velocity(0), x_acceleration(20),
+        y_velocity(0), y_acceleration(120),
+        x_velocity(100),
         m_path_to_RDoodle(path_to_RDoodle),
         m_path_to_LDoodle(path_to_LDoodle) {
     m_pixmap.load(m_path_to_RDoodle);
@@ -27,10 +27,9 @@ void Doodle::move(float deltaTime, std::vector<Platform> platforms, float &new_m
         return;
     }
     float newX;
-    float new_x_Velocity;
 
-    Upd_x(newX, new_x_Velocity, deltaTime);
-    Intersection_with_vertical_boundaries(newX, new_x_Velocity, deltaTime);
+    Upd_x(newX, deltaTime);
+    Intersection_with_vertical_boundaries(newX, deltaTime);
 
     float newY;
     float new_y_Velocity;
@@ -43,7 +42,6 @@ void Doodle::move(float deltaTime, std::vector<Platform> platforms, float &new_m
     y_velocity = new_y_Velocity;
 
     m_x = newX;
-    x_velocity = new_x_Velocity;
 
     new_min_doodle_y_pos = std::min(new_min_doodle_y_pos, m_y);
 }
@@ -60,7 +58,6 @@ void Doodle::StartMovingRight() {
 
 void Doodle::StopMovingRight() {
     m_isMoving_right = false;
-    x_velocity = 0;
 }
 
 void Doodle::StartMovingLeft() {
@@ -70,27 +67,19 @@ void Doodle::StartMovingLeft() {
 
 void Doodle::StopMovingLeft() {
     m_isMoving_left = false;
-    x_velocity = 0;
 }
 
-void Doodle::Upd_x(float &newX, float &new_x_Velocity, const float &deltaTime) {
+void Doodle::Upd_x(float &newX, const float &deltaTime) {
     newX = m_x;
     if (m_isMoving_right) {
-
-        newX = m_x + x_velocity*deltaTime + x_acceleration*deltaTime/2;
-        new_x_Velocity = x_velocity + x_acceleration*deltaTime;
-
-        new_x_Velocity = std::min(new_x_Velocity, max_x_Velocity);
+        newX = m_x + x_velocity*deltaTime;
     }
     if (m_isMoving_left) {
-        newX = m_x - x_velocity*deltaTime - x_acceleration*deltaTime/2;
-        new_x_Velocity = x_velocity + x_acceleration*deltaTime;
-
-        new_x_Velocity = std::min(new_x_Velocity, max_x_Velocity);
+        newX = m_x - x_velocity*deltaTime;
     }
 }
 
-void Doodle::Intersection_with_vertical_boundaries(float &newX, float &new_x_Velocity, const float &deltaTime) {
+void Doodle::Intersection_with_vertical_boundaries(float &newX, const float &deltaTime) {
     if (newX - m_width > SCREEN_SIZE_X) {
         newX = 0;
     }

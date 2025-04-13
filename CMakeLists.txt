@@ -29,6 +29,7 @@ add_executable(double_game main.cpp
         src/PainterWidget.cpp
         hdr/MainWindow.h
         src/MainWindow.cpp
+        hdr/GameWidget.h
 )
 
 target_link_libraries(double_game PRIVATE Qt6Widgets Qt6Core Qt6Gui)

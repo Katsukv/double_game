@@ -15,8 +15,8 @@ public:
 
     Doodle(float x, float y, QString path_to_RDoodle, QString path_to_LDoodle);
 
-    int Get_x() const {return m_x - m_width; }
-    int Get_y() const {return m_y - m_height; }
+    float Get_x() const {return m_x - m_width; }
+    float Get_y() const {return m_y - m_height; }
 
     QRect GetRect() const;
     QPixmap GetPixmap() const { return m_pixmap; }
@@ -31,8 +31,8 @@ public:
     void StopMovingLeft();
 
 private:
-    void Upd_x(float &newX, float &new_x_Velocity, const float &deltaTime);
-    void Intersection_with_vertical_boundaries(float &newX, float &new_x_Velocity, const float &deltaTime);
+    void Upd_x(float &newX, const float &deltaTime);
+    void Intersection_with_vertical_boundaries(float &newX, const float &deltaTime);
     void Upd_y(float &newY, float &new_y_Velocity, const float &deltaTime);
     void Intersection_with_lower_boundaries(float &newY, float &new_y_Velocity, const float &deltaTime);
     void Intersection_with_platforms(float &newY, float &new_y_Velocity,
@@ -41,9 +41,9 @@ private:
     float m_x, m_y;
     float m_height, m_width;
     float y_velocity, y_acceleration;
-    float x_velocity, x_acceleration;
-    float max_x_Velocity = 800;
-    float velocity_after_rebound = -150;
+    float x_velocity;//, x_acceleration;
+    // float max_x_Velocity = 800;
+    float velocity_after_rebound = -240;
 
     bool m_isMoving = true;
     bool m_isMoving_right = false;

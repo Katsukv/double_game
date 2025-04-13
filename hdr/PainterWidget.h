@@ -8,7 +8,6 @@
 #pragma once
 
 #include <QWidget>
-
 #include "Doodle.h"
 
 class PainterWidget: public QWidget{

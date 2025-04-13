@@ -5,6 +5,8 @@
 #include "../hdr/MainWindow.h"
 
 MainWindow::MainWindow(QApplication* app):QMainWindow(), m_app(app){
+
+    app->setWindowIcon(QIcon("..//sprites//Doodle Jump//ach-race-legend@2x.png"));
     m_painterWidget = new PainterWidget(this, m_doodle, m_platforms, score);
 
     this->setGeometry(300, 300, SCREEN_SIZE_X, SCREEN_SIZE_Y);
@@ -25,7 +27,7 @@ void MainWindow::run() {
 
         m_doodle.Upd_y_coordinates(min_doodle_y_pos - new_min_doodle_y_pos);
 
-        for ( Platform &platform: m_platforms) {
+        for (Platform &platform: m_platforms) {
             platform.upd_y_coordinates(min_doodle_y_pos - new_min_doodle_y_pos);
         }
 
