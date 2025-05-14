@@ -12,41 +12,34 @@
 #include <QMouseEvent>
 #include <QApplication>
 
-#include "PainterWidget.h"
 #include <QIcon>
+#include "../hdr/Globals.h"
+#include "../hdr/GameWidget.h"
+#include "../hdr/MenuWidget.h"
 
-class MainWindow: public QMainWindow{
+class MainWindow : public QMainWindow {
+    Q_OBJECT
 public:
-
-    MainWindow(QApplication* app);
+    explicit MainWindow(QApplication* app, QWidget* parent = nullptr);
+    ~MainWindow();
     void run();
 
+    public slots:
+        void handlePlayButton();
+
 protected:
-    void closeEvent(QCloseEvent *event) override;
-    void mousePressEvent(QMouseEvent* event) override;
-    void keyPressEvent(QKeyEvent* event) override;
-    void keyReleaseEvent(QKeyEvent* event) override;
+    void closeEvent(QCloseEvent* event) override;
 
 private:
+    void cleanup();  // Новая функция для очистки памяти
+
     QApplication* m_app;
-    PainterWidget* m_painterWidget;
-    Doodle m_doodle = Doodle(SCREEN_SIZE_X / 2, SCREEN_SIZE_Y / 2,
-    "..//sprites//Doodle Jump//blue-lik-right-odskok@2x.png",
-            "..//sprites//Doodle Jump//blue-lik-left-odskok@2x.png");
-
-    std::vector<Platform> m_platforms;
+    MenuWidget* m_menu = nullptr;
+    GameWidget* m_game = nullptr;
     bool m_isRunning = true;
-    float min_doodle_y_pos = SCREEN_SIZE_Y / 3;
-    float score = 0;
 
-    enum class GameState {
-        MENU,
-        PLAYING,
-        PAUSED,
-        GAME_OVER
-    };
-
-    GameState currentState = GameState::MENU;
+    enum class GameState { MENU, PLAYING };
+    GameState m_currentState = GameState::MENU;
 };
 
 #endif //MAINWINDOW_H

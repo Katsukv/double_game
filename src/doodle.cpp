@@ -122,8 +122,3 @@ void Doodle::Intersection_with_platforms(float &newY, float &new_y_Velocity,
         new_y_Velocity = velocity_after_rebound + y_acceleration*delatTimeUp;
     }
 }
-
-
-
-
-

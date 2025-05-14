@@ -13,5 +13,3 @@ void Platform::upd_y_coordinates(float delta_y) {
 QRect Platform::GetRect() const {
     return QRect(m_x, m_y, m_width, m_height);
 }
-
-

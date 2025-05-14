@@ -4,85 +4,83 @@
 
 #include "../hdr/MainWindow.h"
 
-MainWindow::MainWindow(QApplication* app):QMainWindow(), m_app(app){
+#include "iostream"
+#include "../hdr/Globals.h"
 
-    app->setWindowIcon(QIcon("..//sprites//Doodle Jump//ach-race-legend@2x.png"));
-    m_painterWidget = new PainterWidget(this, m_doodle, m_platforms, score);
 
+MainWindow::MainWindow(QApplication* app, QWidget* parent)
+    : QMainWindow(parent), m_app(app)
+{
+    m_app->setWindowIcon(QIcon("..//sprites//Doodle Jump//ach-race-legend@2x.png"));
     this->setGeometry(300, 300, SCREEN_SIZE_X, SCREEN_SIZE_Y);
-    this->setCentralWidget(m_painterWidget);
+
+    m_menu = new MenuWidget(this);
+    setCentralWidget(m_menu);
+
+    connect(m_menu, &MenuWidget::playButtonClicked, this, &MainWindow::handlePlayButton);
+}
+
+void MainWindow::cleanup() {
+    // Удаляем текущий центральный виджет
+    if (centralWidget()) {
+        takeCentralWidget(); // Убираем виджет из иерархии без удаления
+    }
+
+    // Явное удаление виджетов в правильном порядке
+    if (m_game) {
+        delete m_game;
+        m_game = nullptr;
+    }
+
+    if (m_menu) {
+        delete m_menu;
+        m_menu = nullptr;
+    }
+}
+
+void MainWindow::handlePlayButton() {
+    cleanup(); // Очищаем перед созданием нового виджета
+
+    m_game = new GameWidget(this);
+    setCentralWidget(m_game);
+    m_currentState = GameState::PLAYING;
+    m_game->setFocus();
 }
 
 void MainWindow::run() {
-    uint64_t time = QDateTime::currentMSecsSinceEpoch();
-    while(m_isRunning){
+    uint64_t lastTime = QDateTime::currentMSecsSinceEpoch();
+
+    while (m_isRunning) {
         m_app->processEvents();
-        uint64_t newTime = QDateTime::currentMSecsSinceEpoch();
-        float deltaTime = float(newTime - time)/SIMULATION_SPEED;
 
-        float new_min_doodle_y_pos = min_doodle_y_pos;
-        m_doodle.move(deltaTime, m_platforms, new_min_doodle_y_pos);
+        uint64_t currentTime = QDateTime::currentMSecsSinceEpoch();
+        float deltaTime = float(currentTime - lastTime) / SIMULATION_SPEED;
+        lastTime = currentTime;
 
-        score += (min_doodle_y_pos - new_min_doodle_y_pos) / 3;
-
-        m_doodle.Upd_y_coordinates(min_doodle_y_pos - new_min_doodle_y_pos);
-
-        for (Platform &platform: m_platforms) {
-            platform.upd_y_coordinates(min_doodle_y_pos - new_min_doodle_y_pos);
+        switch (m_currentState) {
+            case GameState::MENU:
+                if (m_menu) m_menu->update(deltaTime);
+                break;
+            case GameState::PLAYING:
+                if (m_game) m_game->update(deltaTime);
+                break;
         }
 
-        this->repaint();
-        time = newTime;
+        update();
     }
+
+    cleanup(); // Дополнительная очистка при выходе из run()
 }
 
-void MainWindow::closeEvent(QCloseEvent *event) {
+void MainWindow::closeEvent(QCloseEvent* event) {
     m_isRunning = false;
-    QMainWindow::closeEvent(event);
+
+    // Даем время на завершение цикла
+
+    cleanup();
+    close();
 }
 
-void MainWindow::mousePressEvent(QMouseEvent* event) {
-
-    if (event->button() == Qt::LeftButton) {
-        QPoint clickPoint = event->pos();
-        m_doodle = Doodle(clickPoint.x(), clickPoint.y(), "..//sprites//Doodle Jump//blue-lik-right-odskok@2x.png",
-            "..//sprites//Doodle Jump//blue-lik-left-odskok@2x.png");
-    }
-    else if (event->button() == Qt::RightButton) {
-        QPoint clickPoint = event->pos();
-        m_platforms.emplace_back(Platform(clickPoint.x(), clickPoint.y()));
-    }
+MainWindow::~MainWindow() {
+    cleanup();
 }
-
-void MainWindow::keyPressEvent(QKeyEvent* event) {
-    if(event->isAutoRepeat()) return;
-
-    switch(event->key()) {
-        case Qt::Key_Left:
-            m_doodle.StartMovingLeft();
-            break;
-        case Qt::Key_Right:
-            m_doodle.StartMovingRight();
-            break;
-        default:
-            break;
-    }
-}
-
-void MainWindow::keyReleaseEvent(QKeyEvent* event) {
-    if(event->isAutoRepeat()) return;
-
-    switch(event->key()) {
-        case Qt::Key_Left:
-            m_doodle.StopMovingLeft();
-            break;
-        case Qt::Key_Right:
-            m_doodle.StopMovingRight();
-            break;
-        default:
-            break;
-    }
-}
-
-
-
