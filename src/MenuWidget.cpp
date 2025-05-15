@@ -6,12 +6,12 @@
 
 #include <iostream>
 MenuWidget::MenuWidget(QWidget* parent) : QWidget(parent) {
-    m_platforms.push_back(Platform(50, 440));
+    m_platforms.push_back(Platform(35, 400));
 
-    titleLabel = new QLabel("Doodle Jump", this);
-    titleLabel->setAlignment(Qt::AlignCenter);
-    titleLabel->setStyleSheet("QLabel { color: red; font: bold 30px; }");
-    titleLabel->setGeometry((SCREEN_SIZE_X - 240)/2, 30, 240, 60);
+    // titleLabel = new QLabel("Doodle Jump", this);
+    // titleLabel->setAlignment(Qt::AlignCenter);
+    // titleLabel->setStyleSheet("QLabel { color: red; font: bold 30px; }");
+    // titleLabel->setGeometry((SCREEN_SIZE_X - 240)/2, 30, 240, 60);
 
     playButton = new CustomButton(this);
     playButton->setImages(
@@ -40,15 +40,14 @@ void MenuWidget::paintEvent(QPaintEvent *event)
     painter.setRenderHint(QPainter::Antialiasing);
 
     QPixmap background;
-    if (background.load("../sprites/Doodle Jump/bck@2x.png")) {
+    if (background.load("..//sprites//Doodle Jump//Default@2x.png")) {
         painter.drawPixmap(0, 0, width(), height(), background);
     } else {
         painter.fillRect(rect(), QColor("#333333"));
     }
 
-    painter.setBrush(Qt::black);
     for (const Platform &platform : m_platforms) {
-        painter.drawRect(platform.GetRect());
+        platform.add_platform_to_painter(painter);
     }
 
     painter.drawPixmap(m_doodle.Get_x(), m_doodle.Get_y(), m_doodle.GetPixmap());

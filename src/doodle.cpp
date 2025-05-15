@@ -4,15 +4,14 @@
 
 #include "../hdr/Doodle.h"
 #include <cmath>
+#include "../hdr/Globals.h"
 
 
-::Doodle::Doodle(float x, float y, QString path_to_RDoodle, QString path_to_LDoodle):
+::Doodle::Doodle(float x, float y):
         m_x(x), m_y(y),
-        y_velocity(0), y_acceleration(120),
-        x_velocity(100),
-        m_path_to_RDoodle(path_to_RDoodle),
-        m_path_to_LDoodle(path_to_LDoodle) {
-    m_pixmap.load(m_path_to_RDoodle);
+        y_velocity(0),
+        x_velocity(100) {
+    m_pixmap.load(QString::fromStdString(path_to_RDoodle));
     m_height = m_pixmap.height() / 2;
     m_width = m_pixmap.width() / 2;
 }
@@ -21,7 +20,7 @@ QRect Doodle::GetRect() const {
     return QRect(m_x, m_y, m_width, m_width);
 }
 
-void Doodle::move(float deltaTime, std::vector<Platform> platforms, float &new_min_doodle_y_pos) {
+void Doodle::move(float deltaTime, std::vector<Platform> &platforms, float &new_min_doodle_y_pos) {
 
     if (!m_isMoving){
         return;
@@ -53,7 +52,7 @@ void Doodle::Upd_y_coordinates(const float &delta_y) {
 
 void Doodle::StartMovingRight() {
     m_isMoving_right = true;
-    m_pixmap.load(m_path_to_RDoodle);
+    m_pixmap.load(QString::fromStdString(path_to_RDoodle));
 }
 
 void Doodle::StopMovingRight() {
@@ -62,7 +61,7 @@ void Doodle::StopMovingRight() {
 
 void Doodle::StartMovingLeft() {
     m_isMoving_left = true;
-    m_pixmap.load(m_path_to_LDoodle);
+    m_pixmap.load(QString::fromStdString(path_to_LDoodle));
 }
 
 void Doodle::StopMovingLeft() {
@@ -80,45 +79,74 @@ void Doodle::Upd_x(float &newX, const float &deltaTime) {
 }
 
 void Doodle::Intersection_with_vertical_boundaries(float &newX, const float &deltaTime) {
-    if (newX - m_width > SCREEN_SIZE_X) {
-        newX = 0;
+    if (newX - m_width / 2 > SCREEN_SIZE_X) {
+        newX = m_width / 2;
     }
-    if (newX < 0) {
-        newX = SCREEN_SIZE_X + m_width;
+    if (newX - m_width / 2 < 0) {
+        newX = SCREEN_SIZE_X + m_width / 2;
     }
 }
 
 void Doodle::Upd_y(float &newY, float &new_y_Velocity, const float &deltaTime) {
-    newY = m_y + y_velocity*deltaTime + y_acceleration*deltaTime*deltaTime/2;
-    new_y_Velocity = y_velocity + y_acceleration*deltaTime;
+    newY = m_y + y_velocity*deltaTime + Y_ACCELERATION*deltaTime*deltaTime/2;
+    new_y_Velocity = y_velocity + Y_ACCELERATION*deltaTime;
 }
 
 void Doodle::Intersection_with_lower_boundaries(float &newY, float &new_y_Velocity, const float &deltaTime) {
     if (newY > SCREEN_SIZE_Y){
         float len = SCREEN_SIZE_Y - m_y;
-        float deltaTimeDown = (-y_velocity + sqrt(y_velocity*y_velocity + 2*y_acceleration*len)) / y_acceleration;
+        float deltaTimeDown = (-y_velocity + sqrt(y_velocity*y_velocity + 2*Y_ACCELERATION*len)) / Y_ACCELERATION;
         float delatTimeUp = deltaTime - deltaTimeDown;
 
-        newY = float(SCREEN_SIZE_Y) + velocity_after_rebound*delatTimeUp + y_acceleration*delatTimeUp*delatTimeUp/2;
+        newY = float(SCREEN_SIZE_Y) + VELOCITY_AFTER_REBOUND*delatTimeUp + Y_ACCELERATION*delatTimeUp*delatTimeUp/2;
 
-        new_y_Velocity = velocity_after_rebound + y_acceleration*delatTimeUp;
+        new_y_Velocity = VELOCITY_AFTER_REBOUND + Y_ACCELERATION*delatTimeUp;
     }
 }
 
 void Doodle::Intersection_with_platforms(float &newY, float &new_y_Velocity,
-        float &newX, const std::vector<Platform> &platforms, const float &deltaTime) {
+        float &newX, std::vector<Platform> &platforms, const float &deltaTime) {
 
-    for (const Platform &platform : platforms) {
+    for (Platform &platform : platforms) {
+
+        Platform old_platform = platform;
+        platform.move(deltaTime);
+
+        if (platform.is_have_spring()) {
+            if (newX >= platform.Get_x_spring() + platform.Get_width_spring() &&
+                newX - m_width <= platform.Get_x_spring() &&
+                m_y < old_platform.Get_y_spring() &&
+                newY >= platform.Get_y_spring()) {
+
+                float len = old_platform.Get_y_spring() - m_y;
+
+                float deltaTimeDown = (-(y_velocity + platform.Get_y_velocity()) +
+                    sqrt((y_velocity + platform.Get_y_velocity()) * (y_velocity + platform.Get_y_velocity())
+                        + 2*Y_ACCELERATION*len)) / Y_ACCELERATION;
+
+                float delatTimeUp = deltaTime - deltaTimeDown;
+
+                newY = platform.Get_y_spring() + VELOCITY_AFTER_REBOUND_SPRING*delatTimeUp + Y_ACCELERATION*delatTimeUp*delatTimeUp/2;
+                new_y_Velocity = VELOCITY_AFTER_REBOUND_SPRING + Y_ACCELERATION*delatTimeUp;
+
+                platform.use_spring();
+
+                continue;
+            }
+        }
 
         if (newX < platform.Get_x() || newX - m_width > platform.Get_x() + platform.Get_width()) continue;
-        if (m_y > platform.Get_y() || newY < platform.Get_y() ) continue;
+        if (m_y > old_platform.Get_y() || newY < platform.Get_y() ) continue;
 
-        float len = platform.Get_y() - m_y;
+        float len = old_platform.Get_y() - m_y;
 
-        float deltaTimeDown = (-y_velocity + sqrt(y_velocity*y_velocity + 2*y_acceleration*len)) / y_acceleration;
+        float deltaTimeDown = (-(y_velocity + platform.Get_y_velocity()) +
+            sqrt((y_velocity + platform.Get_y_velocity()) * (y_velocity + platform.Get_y_velocity())
+                + 2*Y_ACCELERATION*len)) / Y_ACCELERATION;
+
         float delatTimeUp = deltaTime - deltaTimeDown;
 
-        newY = platform.Get_y() + velocity_after_rebound*delatTimeUp + y_acceleration*delatTimeUp*delatTimeUp/2;
-        new_y_Velocity = velocity_after_rebound + y_acceleration*delatTimeUp;
+        newY = platform.Get_y() + VELOCITY_AFTER_REBOUND*delatTimeUp + Y_ACCELERATION*delatTimeUp*delatTimeUp/2;
+        new_y_Velocity = VELOCITY_AFTER_REBOUND + Y_ACCELERATION*delatTimeUp;
     }
 }

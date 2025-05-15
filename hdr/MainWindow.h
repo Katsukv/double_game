@@ -31,7 +31,7 @@ protected:
     void closeEvent(QCloseEvent* event) override;
 
 private:
-    void cleanup();  // Новая функция для очистки памяти
+    void cleanup();
 
     QApplication* m_app;
     MenuWidget* m_menu = nullptr;

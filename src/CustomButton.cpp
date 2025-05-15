@@ -3,7 +3,7 @@
 
 CustomButton::CustomButton(QWidget* parent) : QPushButton(parent)
 {
-    setFlat(true); // Убираем стандартные стили кнопки
+    setFlat(true);
     setCursor(Qt::PointingHandCursor);
 }
 
@@ -19,7 +19,6 @@ void CustomButton::setImages(const QString& normal, const QString& pressed,
         m_hover.load(hover);
     }
 
-    // Устанавливаем размер кнопки по размеру изображения
     if (!m_normal.isNull()) {
         setFixedSize(m_normal.size().width()/2, m_normal.size().height()/2);
     }

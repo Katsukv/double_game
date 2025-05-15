@@ -21,9 +21,7 @@ protected:
     void paintEvent(QPaintEvent* event) override;
 
 private:
-    Doodle m_doodle = Doodle(SCREEN_SIZE_X / 2, SCREEN_SIZE_Y / 2,
-    "..//sprites//Doodle Jump//blue-lik-right-odskok@2x.png",
-            "..//sprites//Doodle Jump//blue-lik-left-odskok@2x.png");
+    Doodle m_doodle = Doodle(SCREEN_SIZE_X / 2, SCREEN_SIZE_Y / 2);
     std::vector<Platform> m_platforms;
     float min_doodle_y_pos = SCREEN_SIZE_Y / 3;
     float score = 0;

@@ -21,12 +21,10 @@ MainWindow::MainWindow(QApplication* app, QWidget* parent)
 }
 
 void MainWindow::cleanup() {
-    // Удаляем текущий центральный виджет
     if (centralWidget()) {
-        takeCentralWidget(); // Убираем виджет из иерархии без удаления
+        takeCentralWidget();
     }
 
-    // Явное удаление виджетов в правильном порядке
     if (m_game) {
         delete m_game;
         m_game = nullptr;
@@ -39,7 +37,7 @@ void MainWindow::cleanup() {
 }
 
 void MainWindow::handlePlayButton() {
-    cleanup(); // Очищаем перед созданием нового виджета
+    cleanup();
 
     m_game = new GameWidget(this);
     setCentralWidget(m_game);
@@ -69,13 +67,11 @@ void MainWindow::run() {
         update();
     }
 
-    cleanup(); // Дополнительная очистка при выходе из run()
+    cleanup();
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {
     m_isRunning = false;
-
-    // Даем время на завершение цикла
 
     cleanup();
     close();

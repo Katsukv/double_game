@@ -36,6 +36,9 @@ add_executable(double_game main.cpp
         src/MenuWidget.cpp
         hdr/CustomButton.h
         src/CustomButton.cpp
+        src/Generator.cpp
+        src/Globals.cpp
+        hdr/Generator.h
 )
 
 target_link_libraries(double_game PRIVATE Qt6Widgets Qt6Core Qt6Gui)

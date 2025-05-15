@@ -17,8 +17,8 @@ class MenuWidget : public QWidget
 public:
     explicit MenuWidget(QWidget* parent = nullptr);
     void update(double deltaTime);
-signals:
-    void playButtonClicked();
+    signals:
+        void playButtonClicked();
 protected:
     void paintEvent(QPaintEvent *event) override;
 private:
@@ -29,8 +29,7 @@ private:
     QPushButton *exitButton;
     QLabel *titleLabel;
     QLabel *versionLabel;
-    Doodle m_doodle = Doodle(90, 420, "..//sprites//Doodle Jump//blue-lik-right-odskok@2x.png",
-            "..//sprites//Doodle Jump//blue-lik-left-odskok@2x.png");
+    Doodle m_doodle = Doodle(90, 420);
     std::vector<Platform> m_platforms;
 };
 
