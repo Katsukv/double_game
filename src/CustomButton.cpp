@@ -1,5 +1,4 @@
 #include "../hdr/CustomButton.h"
-#include <QPainter>
 
 CustomButton::CustomButton(QWidget* parent) : QPushButton(parent)
 {

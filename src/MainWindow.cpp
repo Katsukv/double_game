@@ -3,8 +3,6 @@
 //
 
 #include "../hdr/MainWindow.h"
-
-#include "iostream"
 #include "../hdr/Globals.h"
 
 
@@ -14,26 +12,30 @@ MainWindow::MainWindow(QApplication* app, QWidget* parent)
     m_app->setWindowIcon(QIcon("..//sprites//Doodle Jump//ach-race-legend@2x.png"));
     this->setGeometry(300, 300, SCREEN_SIZE_X, SCREEN_SIZE_Y);
 
-    m_menu = new MenuWidget(this);
-    setCentralWidget(m_menu);
+    QFile file("scores.csv");
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&file);
 
-    connect(m_menu, &MenuWidget::playButtonClicked, this, &MainWindow::handlePlayButton);
+        while (!in.atEnd()) {
+            QString line = in.readLine();
+            QStringList parts = line.split(",");
+            if (parts.size() >= 3) {
+                    m_high_score = std::max(m_high_score, parts[1].toInt());
+            }
+        }
+        file.close();
+    }
+    StartMenu();
 }
 
 void MainWindow::cleanup() {
-    if (centralWidget()) {
-        takeCentralWidget();
+    QWidget* current = takeCentralWidget();
+    if (current) {
+        current->deleteLater();
     }
 
-    if (m_game) {
-        delete m_game;
-        m_game = nullptr;
-    }
-
-    if (m_menu) {
-        delete m_menu;
-        m_menu = nullptr;
-    }
+    m_game = nullptr;
+    m_menu = nullptr;
 }
 
 void MainWindow::handlePlayButton() {
@@ -41,8 +43,41 @@ void MainWindow::handlePlayButton() {
 
     m_game = new GameWidget(this);
     setCentralWidget(m_game);
+    connect(m_game, &GameWidget::PlayerLost, this, &MainWindow::PlayerLost);
     m_currentState = GameState::PLAYING;
     m_game->setFocus();
+}
+
+void MainWindow::StartMenu() {
+
+    cleanup();
+
+    m_menu = new MenuWidget(this);
+    setCentralWidget(m_menu);
+
+    connect(m_menu, &MenuWidget::playButtonClicked, this, &MainWindow::handlePlayButton);
+
+    m_currentState = GameState::MENU;
+    m_menu->setFocus();
+}
+
+void MainWindow::PlayerLost(int score) {
+
+    cleanup();
+
+    m_high_score = std::max(m_high_score, score);
+    m_end_game = new EndGameWidget( score, m_high_score, this);
+    setCentralWidget(m_end_game);
+
+
+
+    connect(m_end_game, &EndGameWidget::playAgainButtonClicked, this, &MainWindow::handlePlayButton);
+    connect(m_end_game, &EndGameWidget::menuButtonClicked, this, &MainWindow::StartMenu);
+
+
+
+    m_currentState = GameState::ENDGAME;
+    m_end_game->setFocus();
 }
 
 void MainWindow::run() {
@@ -62,6 +97,9 @@ void MainWindow::run() {
             case GameState::PLAYING:
                 if (m_game) m_game->update(deltaTime);
                 break;
+            case GameState::ENDGAME:
+                if (m_end_game) m_end_game->update(deltaTime);
+            break;
         }
 
         update();

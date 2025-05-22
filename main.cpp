@@ -1,3 +1,9 @@
+//pacific mode
+// no war, no death, peace only
+// good
+// morning
+// vietnam
+
 #include <iostream>
 #include <QApplication>
 

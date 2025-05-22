@@ -3,10 +3,6 @@
 //
 
 #include "../hdr/Platform.h"
-
-#include <iostream>
-#include <qtextstream.h>
-
 #include "../hdr/Globals.h"
 
 ::Platform::Platform(float x, float y): m_x(x), m_y(y),

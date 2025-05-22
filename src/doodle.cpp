@@ -3,7 +3,6 @@
 //
 
 #include "../hdr/Doodle.h"
-#include <cmath>
 #include "../hdr/Globals.h"
 
 
@@ -94,13 +93,7 @@ void Doodle::Upd_y(float &newY, float &new_y_Velocity, const float &deltaTime) {
 
 void Doodle::Intersection_with_lower_boundaries(float &newY, float &new_y_Velocity, const float &deltaTime) {
     if (newY > SCREEN_SIZE_Y){
-        float len = SCREEN_SIZE_Y - m_y;
-        float deltaTimeDown = (-y_velocity + sqrt(y_velocity*y_velocity + 2*Y_ACCELERATION*len)) / Y_ACCELERATION;
-        float delatTimeUp = deltaTime - deltaTimeDown;
-
-        newY = float(SCREEN_SIZE_Y) + VELOCITY_AFTER_REBOUND*delatTimeUp + Y_ACCELERATION*delatTimeUp*delatTimeUp/2;
-
-        new_y_Velocity = VELOCITY_AFTER_REBOUND + Y_ACCELERATION*delatTimeUp;
+        lost = 1;
     }
 }
 

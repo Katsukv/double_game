@@ -3,6 +3,8 @@
 
 #include <QPushButton>
 #include <QPixmap>
+#include <QPainter>
+
 
 class CustomButton : public QPushButton
 {

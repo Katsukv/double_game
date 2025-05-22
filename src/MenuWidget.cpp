@@ -1,17 +1,8 @@
 #include "../hdr/MenuWidget.h"
-#include <QPainter>
-#include <QFontDatabase>
-#include <QVBoxLayout>
 #include "../hdr/Globals.h"
 
-#include <iostream>
 MenuWidget::MenuWidget(QWidget* parent) : QWidget(parent) {
     m_platforms.push_back(Platform(35, 400));
-
-    // titleLabel = new QLabel("Doodle Jump", this);
-    // titleLabel->setAlignment(Qt::AlignCenter);
-    // titleLabel->setStyleSheet("QLabel { color: red; font: bold 30px; }");
-    // titleLabel->setGeometry((SCREEN_SIZE_X - 240)/2, 30, 240, 60);
 
     playButton = new CustomButton(this);
     playButton->setImages(
@@ -20,16 +11,25 @@ MenuWidget::MenuWidget(QWidget* parent) : QWidget(parent) {
         "../usefullSprites/play-on@2x.png"
     );
     playButton->move((SCREEN_SIZE_X - playButton->width())/2, 150);
-
-    // Только одно соединение!
     connect(playButton, &QPushButton::clicked, this, &MenuWidget::playButtonClicked);
+
+    highScoresButton = new CustomButton(this);
+    highScoresButton->setImages(
+        "../usefullSprites/scores.png",
+        "../usefullSprites/scores-on@2x.png",
+        "../usefullSprites/scores-on@2x.png"
+    );
+    highScoresButton->setFixedSize(122,40);
+    highScoresButton->move(180, SCREEN_SIZE_Y - 130);
+    connect(highScoresButton, &QPushButton::clicked, this, &MenuWidget::showHighScores);
 }
 
 
 void MenuWidget::update(double deltaTime) {
+    // qDebug() << deltaTime;
+    deltaTime = std::min(deltaTime, 0.1);
     float x;
     m_doodle.move(deltaTime, m_platforms, x);
-    // std::cout << "upd\n" << std::endl;
 }
 
 void MenuWidget::paintEvent(QPaintEvent *event)
@@ -51,4 +51,13 @@ void MenuWidget::paintEvent(QPaintEvent *event)
     }
 
     painter.drawPixmap(m_doodle.Get_x(), m_doodle.Get_y(), m_doodle.GetPixmap());
+}
+
+void MenuWidget::showHighScores() {
+    HighScoresDialog* dialog = new HighScoresDialog(this);
+    dialog->setWindowTitle("High Scores");
+    dialog->setFixedSize(320, 400);  // Фиксированный размер
+    dialog->loadScores();
+    dialog->exec();
+    delete dialog;
 }

@@ -39,6 +39,11 @@ add_executable(double_game main.cpp
         src/Generator.cpp
         src/Globals.cpp
         hdr/Generator.h
+        hdr/RemoveUnnecessaryPlatforms.h
+        src/RemoveUnnecessaryPlatforms.cpp
+        hdr/EndGameWidget.h
+        src/EndGameWidget.cpp
+        src/HighScoresDialog.cpp
 )
 
 target_link_libraries(double_game PRIVATE Qt6Widgets Qt6Core Qt6Gui)
