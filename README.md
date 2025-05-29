@@ -48,14 +48,15 @@ play again: сразу начинает новую игру
 
 
 Структура проекта.
-\\\`
+```
 double_game
 ├── hrd/             # Заголовочные файлы (Character, Platform, HighScores, StateManager)
 ├── src/             # cpp файлы
 ├── scores.csv       # Файл рекордов
 ├── CMakeLists.txt   # Конфигурация CMake
 └── README.md        # Документация
-\\\`
+```
+
 
 
 Для запуска на своеём компьютере на диске C должна быть папка Qt с файлами Qt версии 6.
