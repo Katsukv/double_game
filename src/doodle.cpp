@@ -5,6 +5,8 @@
 #include "../hdr/Doodle.h"
 #include "../hdr/Globals.h"
 
+#include <iostream>
+
 
 ::Doodle::Doodle(float x, float y):
         m_x(x), m_y(y),
@@ -16,7 +18,9 @@
 }
 
 QRect Doodle::GetRect() const {
-    return QRect(m_x, m_y, m_width, m_width);
+    // std::cout << "!!!!!!!!\n";
+    // qDebug() << "Doodle::GetRect() " << m_width << ", " << m_height << ", " << m_x << ", " << m_y;
+    return QRect(m_x - m_width, m_y - m_height, m_width, m_height);
 }
 
 void Doodle::move(float deltaTime, std::vector<Platform> &platforms, float &new_min_doodle_y_pos) {
@@ -102,6 +106,12 @@ void Doodle::Intersection_with_platforms(float &newY, float &new_y_Velocity,
 
     for (Platform &platform : platforms) {
 
+        if (platform.IsOneTouch()) {
+            if (platform.IsTouch()) {
+                continue;
+            }
+        }
+
         Platform old_platform = platform;
         platform.move(deltaTime);
 
@@ -123,6 +133,7 @@ void Doodle::Intersection_with_platforms(float &newY, float &new_y_Velocity,
                 new_y_Velocity = VELOCITY_AFTER_REBOUND_SPRING + Y_ACCELERATION*delatTimeUp;
 
                 platform.use_spring();
+                platform.Touch();
 
                 continue;
             }
@@ -141,5 +152,7 @@ void Doodle::Intersection_with_platforms(float &newY, float &new_y_Velocity,
 
         newY = platform.Get_y() + VELOCITY_AFTER_REBOUND*delatTimeUp + Y_ACCELERATION*delatTimeUp*delatTimeUp/2;
         new_y_Velocity = VELOCITY_AFTER_REBOUND + Y_ACCELERATION*delatTimeUp;
+
+        platform.Touch();
     }
 }

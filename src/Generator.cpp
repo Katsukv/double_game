@@ -37,7 +37,7 @@ void Generate(vector<Platform> &platforms, float score) {
 
         // cout << y << ' ' << max_h << ' ' << std::min(0.98, score / 10000.0) << endl;
 
-        float base_h = max_h * std::min(0.98, score / 10000.0);
+        float base_h = max_h * std::min(0.98, score / 20000.0);
         float h = base_h + unif(gen) * (max_h - base_h);
 
         // cout << "h = " << h << endl;
@@ -48,17 +48,20 @@ void Generate(vector<Platform> &platforms, float score) {
         platforms.emplace_back(Platform(unif(gen) * (SCREEN_SIZE_X - w), y - h));
 
         // cout << (std::max(0.1, 1 - score / 10000.0)) << endl;
-        if ((unif(gen) / (std::max(0.1, 1 - score / 10000.0))) > 0.9) {
+        if ((unif(gen) / (std::max(0.1, 1 - score / 20000.0))) > 0.9) {
             platforms.back().add_spring(unif(gen) * (w - w_s));
         }
 
-        if ((unif(gen) / (std::max(0.1, 1 - score / 10000.0))) > 0.9) {
+        if ((unif(gen) / (std::max(0.1, 1 - score / 20000.0))) > 0.9) {
 
             // cout << "add_velocity: " << std::max(0.1, (1.0 - score / 10000.0)) << endl;
-            if (unif(gen) > 0.5) {
-                platforms.back().add_y_velocity(15 + std::min(30.0, 30 * unif(gen) / std::max(0.1, 1 - score / 10000.0)) );
+            float ver = unif(gen);
+            if (ver < 0.33) {
+                platforms.back().add_y_velocity(15 + std::min(30.0, 30 * unif(gen) / std::max(0.1, 1 - score / 20000.0)) );
+            } else if (ver < 0.66){
+                platforms.back().add_x_velocity(15 + std::min(30.0, 30 * unif(gen) / std::max(0.1, 1 - score / 20000.0)) );
             } else {
-                platforms.back().add_x_velocity(15 + std::min(30.0, 30 * unif(gen) / std::max(0.1, 1 - score / 10000.0)) );
+                platforms.back().DoOneTouch();
             }
         }
 

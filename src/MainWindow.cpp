@@ -41,6 +41,8 @@ void MainWindow::cleanup() {
 void MainWindow::handlePlayButton() {
     cleanup();
 
+    qDebug() << path_to_LDoodle;
+
     m_game = new GameWidget(this);
     setCentralWidget(m_game);
     connect(m_game, &GameWidget::PlayerLost, this, &MainWindow::PlayerLost);

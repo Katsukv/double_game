@@ -17,6 +17,34 @@
 #include "../hdr/CustomButton.h"
 #include "../hdr/Globals.h"
 
+class OptionsDialog : public QDialog {
+    Q_OBJECT
+public:
+    explicit OptionsDialog(QWidget* parent = nullptr) : QDialog(parent) {
+        setWindowTitle("Choose Theme");
+        setFixedSize(200, 150);
+
+        QVBoxLayout* layout = new QVBoxLayout(this);
+
+        QPushButton* defaultButton = new QPushButton("Default", this);
+        QPushButton* spaceButton = new QPushButton("Space", this);
+        QPushButton* halloweenButton = new QPushButton("Halloween", this);
+
+        layout->addWidget(defaultButton);
+        layout->addWidget(spaceButton);
+        layout->addWidget(halloweenButton);
+
+        connect(defaultButton, &QPushButton::clicked, this, &OptionsDialog::setDefaultTheme);
+        connect(spaceButton, &QPushButton::clicked, this, &OptionsDialog::setSpaceTheme);
+        connect(halloweenButton, &QPushButton::clicked, this, &OptionsDialog::setHalloweenTheme);
+    }
+
+    signals:
+        void setDefaultTheme();
+    void setSpaceTheme();
+    void setHalloweenTheme();
+};
+
 class HighScoresDialog : public QDialog {
     Q_OBJECT
 public:
@@ -48,10 +76,11 @@ protected:
 
 private slots:
     void showHighScores();
+    void showOptions();
 private:
     void setupUI();
     CustomButton *playButton;
-    QPushButton *settingsButton;
+    CustomButton *optionsButton;
     QPushButton *exitButton;
     CustomButton* highScoresButton;
     QLabel *titleLabel;
@@ -59,5 +88,9 @@ private:
     Doodle m_doodle = Doodle(90, 400);
     std::vector<Platform> m_platforms;
 };
+
+void SetOptionToDefolt();
+void SetOptionToSpace();
+void SetOptionToHalloween();
 
 #endif // MENUWIDGET_H

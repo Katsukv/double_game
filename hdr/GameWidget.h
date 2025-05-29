@@ -10,6 +10,7 @@
 #include "Doodle.h"
 #include "Globals.h"
 #include "Platform.h"
+#include "EndGameWidget.h"
 
 class GameWidget : public QWidget {
     Q_OBJECT
@@ -29,8 +30,14 @@ private:
     std::vector<Platform> m_platforms;
     float min_doodle_y_pos = SCREEN_SIZE_Y / 3;
     float score = 0;
+    int hight_score = 0;
     float old_y_pos = -1;
     QFont customFont;
+
+    EndGameWidget *end_game = nullptr;
+    QPixmap end_game_pixmap;
+    bool IsEndGame = false;
+    float y_end_game;
 };
 
 #endif // GAMEWIDGET_H

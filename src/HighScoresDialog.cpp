@@ -10,7 +10,7 @@ HighScoresDialog::HighScoresDialog(QWidget* parent) : QDialog(parent) {
 
     int fontId = QFontDatabase::addApplicationFont("../sprites/Doodle Jump/options/DoodleJump.ttf");
     QString fontFamily = QFontDatabase::applicationFontFamilies(fontId).at(0);
-    customFont = QFont(fontFamily, 20);
+    customFont = QFont(fontFamily, 16);
     customFont.setBold(true);
 
     mainContainer = new QWidget(this);

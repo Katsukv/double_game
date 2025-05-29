@@ -35,6 +35,8 @@ public:
     void StartMovingLeft();
     void StopMovingLeft();
 
+    void ChangeYVelocity(float x) {y_velocity = x; }
+
     bool IsLost() {return lost;}
 
 private:

@@ -9,6 +9,9 @@
 
 #include <QPainter>
 #include <QPixmap>
+#include <QDebug>
+
+#include "Globals.h"
 
 class Platform {
 public:
@@ -22,10 +25,15 @@ public:
 
     void add_x_velocity(float x);
     void add_y_velocity(float y);
+    void DoOneTouch();
+    void Touch() {is_Touch = true;}
+
     [[nodiscard]] float Get_y_velocity() const { return y_velocity; }
     [[nodiscard]] float Get_x_velocity() const { return x_velocity; }
     bool Is_moving_y() { return is_moving_y; }
     bool Is_moving_x() { return is_moving_x; }
+    bool IsOneTouch() { return is_OneTouch; }
+    bool IsTouch() { return is_Touch; }
     [[nodiscard]] float Get_up_border() const { return up_border; }
 
     void add_platform_to_painter(QPainter &painter) const;
@@ -36,7 +44,7 @@ public:
     [[nodiscard]] float Get_width() const { return m_width; }
 
     void add_spring(float x);
-    void use_spring() {used_spring = true;}
+    void use_spring();
     bool is_have_spring() { return is_spring; }
     [[nodiscard]] float Get_x_spring() const { return m_x + x_spring; }
     [[nodiscard]] float Get_y_spring() const { return m_y - spring_standart_height; }
@@ -68,7 +76,11 @@ private:
     float fall_in_second_state = 0;
     float fall_in_third_state = 0;
 
+    bool is_OneTouch = false;
+    bool is_Touch = false;
+
     QPixmap platform_pixmap;
+    QPixmap spring_pixmap;
     QPixmap string_pixmap;
 };
 

@@ -1,6 +1,8 @@
 #include "../hdr/MenuWidget.h"
 #include "../hdr/Globals.h"
 
+#include <QDebug>
+
 MenuWidget::MenuWidget(QWidget* parent) : QWidget(parent) {
     m_platforms.push_back(Platform(35, 400));
 
@@ -22,6 +24,16 @@ MenuWidget::MenuWidget(QWidget* parent) : QWidget(parent) {
     highScoresButton->setFixedSize(122,40);
     highScoresButton->move(180, SCREEN_SIZE_Y - 130);
     connect(highScoresButton, &QPushButton::clicked, this, &MenuWidget::showHighScores);
+
+    optionsButton = new CustomButton(this);
+    optionsButton->setImages(
+        "../usefullSprites/options@2x.png",
+        "../usefullSprites/options-on@2x.png",
+        "../usefullSprites/options-on@2x.png"
+        );
+    optionsButton->setFixedSize(122,40);
+    optionsButton->move(180, SCREEN_SIZE_Y - 180);
+    connect(optionsButton, &QPushButton::clicked, this, &MenuWidget::showOptions);
 }
 
 
@@ -50,14 +62,63 @@ void MenuWidget::paintEvent(QPaintEvent *event)
         platform.add_platform_to_painter(painter);
     }
 
-    painter.drawPixmap(m_doodle.Get_x(), m_doodle.Get_y(), m_doodle.GetPixmap());
+    painter.drawPixmap(m_doodle.GetRect(), m_doodle.GetPixmap());
 }
 
 void MenuWidget::showHighScores() {
     HighScoresDialog* dialog = new HighScoresDialog(this);
     dialog->setWindowTitle("High Scores");
-    dialog->setFixedSize(320, 400);  // Фиксированный размер
+    dialog->setFixedSize(320, 400);
     dialog->loadScores();
     dialog->exec();
     delete dialog;
+}
+
+void MenuWidget::showOptions() {
+    OptionsDialog* dialog = new OptionsDialog(this);
+    connect(dialog, &OptionsDialog::setDefaultTheme, this, []() { emit SetOptionToDefolt(); });
+    connect(dialog, &OptionsDialog::setSpaceTheme, this, []() { emit SetOptionToSpace(); });
+    connect(dialog, &OptionsDialog::setHalloweenTheme, this, []() { emit SetOptionToHalloween(); });
+
+    dialog->exec();
+    delete dialog;
+}
+
+void SetOptionToDefolt() {
+    path_to_LDoodle = "..//sprites//Defolt//left.png";
+    path_to_RDoodle = "..//sprites//Defolt//right.png";
+    path_to_standart_platform = "..//sprites//Defolt//platform.png";
+    path_to_horizontal_moving_platform = "..//sprites//Defolt//horizontal moving platform.png";
+    path_to_vertical_moving_platform = "..//sprites//Defolt//vertical moving platform.png";
+    path_to_one_touch_platform = "../sprites/Defolt/one touch platform.png";
+    path_to_standart_spring = "../sprites/Defolt/standart spring.png";
+    path_to_used_spring = "../sprites/Defolt/used spring.png";
+    path_to_background = "..//sprites//Defolt//bck.png";
+}
+
+void SetOptionToSpace() {
+    // qDebug() << "SSpace\n";
+    path_to_LDoodle = "..//sprites//Space//left.png";
+    path_to_RDoodle = "..//sprites//Space//right.png";
+    path_to_standart_platform = "..//sprites//Space//platform.png";
+    path_to_horizontal_moving_platform = "..//sprites//Space//horizontal moving platform.png";
+    path_to_vertical_moving_platform = "..//sprites//Space//vertical moving platform.png";
+    path_to_one_touch_platform = "../sprites/Space/one touch platform.png";
+    path_to_standart_spring = "../sprites/Space/standart spring.png";
+    path_to_used_spring = "../sprites/Space/used spring.png";
+    path_to_background = "..//sprites//Space//bck.png";
+
+    // qDebug() << path_to_LDoodle;
+}
+
+void SetOptionToHalloween() {
+    path_to_LDoodle = "..//sprites//Halloween//left.png";
+    path_to_RDoodle = "..//sprites//Halloween//right.png";
+    path_to_standart_platform = "..//sprites//Halloween//platform.png";
+    path_to_horizontal_moving_platform = "..//sprites//Halloween//horizontal moving platform.png";
+    path_to_vertical_moving_platform = "..//sprites//Halloween//vertical moving platform.png";
+    path_to_one_touch_platform = "../sprites/Halloween/one touch platform.png";
+    path_to_standart_spring = "../sprites/Halloween/standart spring.png";
+    path_to_used_spring = "../sprites/Halloween/used spring.png";
+    path_to_background = "..//sprites//Halloween//bck.png";
 }

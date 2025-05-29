@@ -3,6 +3,7 @@
 //
 #include "../hdr/GameWidget.h"
 #include "../hdr/Generator.h"
+#include "../hdr/MenuWidget.h"
 #include "../hdr/RemoveUnnecessaryPlatforms.h"
 
 GameWidget::GameWidget(QWidget* parent)
@@ -63,8 +64,50 @@ void GameWidget::keyReleaseEvent(QKeyEvent* event) {
 void GameWidget::update(double deltaTime) {
 
     if (m_doodle.IsLost()) {
-        if (m_doodle.Get_y()<SCREEN_SIZE_Y*0.4) {
-            emit PlayerLost((int)score);
+
+        if (!IsEndGame && m_doodle.Get_y()<SCREEN_SIZE_Y*0.3) {
+            QFile file("scores.csv");
+            if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                QTextStream in(&file);
+
+                while (!in.atEnd()) {
+                    QString line = in.readLine();
+                    QStringList parts = line.split(",");
+                    if (parts.size() >= 3) {
+                        hight_score = std::max(hight_score, parts[1].toInt());
+                    }
+                }
+                file.close();
+            }
+
+            end_game = new EndGameWidget(score, hight_score);
+            end_game_pixmap = end_game->grab();
+            delete end_game;
+
+            IsEndGame = true;
+            // m_doodle.ChangeYVelocity(0);
+
+            y_end_game = SCREEN_SIZE_Y;
+        }
+        if (IsEndGame) {
+            // qDebug() << y_end_game << ' ' << m_doodle.Get_y();
+            float new_min_doodle_y_pos = min_doodle_y_pos;
+            m_doodle.move(deltaTime, m_platforms, new_min_doodle_y_pos);
+
+            float delta = old_y_pos - m_doodle.Get_y();
+
+            // qDebug() << delta <<
+
+            m_doodle.Upd_y_coordinates(delta*0.3);
+            y_end_game += delta;
+
+            old_y_pos = m_doodle.Get_y();
+
+            if (m_doodle.Get_y()>SCREEN_SIZE_Y) {
+                emit PlayerLost((int)score);
+            }
+
+            return;
         }
     }
 
@@ -108,9 +151,13 @@ void GameWidget::paintEvent(QPaintEvent *event) {
     QPainter painter(this);
 
     QPixmap background;
-    background.load("..//sprites//Doodle Jump//bck@2x.png");
+    background.load(QString::fromStdString(path_to_background));
+    painter.drawPixmap(0, 0, background.width()/2, background.height()/2, background);
 
-    painter.drawPixmap(0, 0, background);
+    if (IsEndGame) {
+        painter.drawPixmap(0, y_end_game, end_game_pixmap);
+        // qDebug() << "!!!: " << y_end_game;
+    }
 
     for (const Platform &platform: m_platforms) {
         platform.add_platform_to_painter(painter);
@@ -120,7 +167,7 @@ void GameWidget::paintEvent(QPaintEvent *event) {
     painter.setFont(customFont);
     painter.drawText(250, 25, QString::number((int)score));
 
-    painter.drawPixmap(m_doodle.Get_x(), m_doodle.Get_y(), m_doodle.GetPixmap());
+    painter.drawPixmap(m_doodle.GetRect(), m_doodle.GetPixmap());
 
     painter.end();
 }
