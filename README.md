@@ -1,4 +1,4 @@
-# double_gam
+# double_game
 
 Особенности
 
